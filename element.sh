@@ -15,7 +15,7 @@ TYPE_ID="TYPE_ID"
 
 NOT_FOUND() {
 
-  echo -e "I could not find that element in the database."
+  echo "I could not find that element in the database."
 }
 
 QUERY() {
@@ -50,27 +50,11 @@ elif [[ $1 =~ ^[0-9]+$ ]]; then
 
   fi
 
-# when arg is a char
-elif [[ $1 = [[:alpha:]] ]]; then
-
-  # query database using argument
-  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) WHERE symbol = '$1'")
-
-  if [[ -z $QUERY_ELEMENT ]]; then
-
-    NOT_FOUND
-
-  else
-
-    QUERY
-
-  fi
-
-# when arg is a string
+# when arg is a string or char
 elif [[ ! $1 =~ ^[0-9]+$ ]]; then
 
   # query database using argument
-  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) WHERE name = '$1'")
+  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) WHERE name LIKE '$1%' LIMIT 1")
 
   if [[ -z $QUERY_ELEMENT ]]; then
 
