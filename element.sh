@@ -44,10 +44,7 @@ elif [[ $1 =~ ^[0-9]+$ ]]; then
 
   else
 
-    echo "$QUERY_ELEMENT" | while IFS='|' read ATOMIC_NUMBER ATOMIC_SYMBOL ELEMENT_NAME ELEMENT_TYPE ATOMIC_MASS MELTING_POINT BOILING_POINT TYPE_ID; do
-
-      echo -e "\nThe element with atomic number $ATOMIC_NUMBER is $ELEMENT_NAME ($ATOMIC_SYMBOL). It's a $ELEMENT_TYPE, with a mass of $ATOMIC_MASS amu. $ELEMENT_NAME has a melting point of $MELTING_POINT celsius and a boiling point of $BOILING_POINT celsius.\n"
-    done
+    QUERY
 
   fi
 
@@ -55,7 +52,7 @@ elif [[ $1 =~ ^[0-9]+$ ]]; then
 elif [[ $1 = [[:alpha:]] ]]; then
 
   # query database using argument
-  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) WHERE symbol = '$1'\n")
+  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) WHERE symbol = '$1'")
 
   if [[ -z $QUERY_ELEMENT ]]; then
 
@@ -63,10 +60,7 @@ elif [[ $1 = [[:alpha:]] ]]; then
 
   else
 
-    echo "$QUERY_ELEMENT" | while IFS='|' read ATOMIC_NUMBER ATOMIC_SYMBOL ELEMENT_NAME ELEMENT_TYPE ATOMIC_MASS MELTING_POINT BOILING_POINT TYPE_ID; do
-
-      echo -e "\nThe element with atomic number $ATOMIC_NUMBER is $ELEMENT_NAME ($ATOMIC_SYMBOL). It's a $ELEMENT_TYPE, with a mass of $ATOMIC_MASS amu. $ELEMENT_NAME has a melting point of $MELTING_POINT celsius and a boiling point of $BOILING_POINT celsius.\n"
-    done
+    QUERY
 
   fi
 
@@ -82,10 +76,7 @@ elif [[ ! $1 =~ ^[0-9]+$ ]]; then
 
   else
 
-    echo "$QUERY_ELEMENT" | while IFS='|' read ATOMIC_NUMBER ATOMIC_SYMBOL ELEMENT_NAME ELEMENT_TYPE ATOMIC_MASS MELTING_POINT BOILING_POINT TYPE_ID; do
-
-      echo -e "\nThe element with atomic number $ATOMIC_NUMBER is $ELEMENT_NAME ($ATOMIC_SYMBOL). It's a $ELEMENT_TYPE, with a mass of $ATOMIC_MASS amu. $ELEMENT_NAME has a melting point of $MELTING_POINT celsius and a boiling point of $BOILING_POINT celsius.\n"
-    done
+    QUERY
 
   fi
 
