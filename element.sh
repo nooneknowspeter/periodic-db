@@ -28,12 +28,12 @@ elif [[ $1 = [[:alpha:]] ]]; then
   echo "single char"
 
 # when arg is a string
-elif [[ $1 ]]; then
+elif [[ ! $1 =~ ^[0-9]+$ ]]; then
 
   echo "string"
   
 else
 
   echo -e "\nI could not find that element in the database."
-  
+
 fi
