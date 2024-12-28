@@ -15,14 +15,16 @@ TYPE_ID="TYPE_ID"
 
 NOT_FOUND() {
 
-  echo -e "\nI could not find that element in the database."
+  echo -e "I could not find that element in the database."
 }
 
 QUERY() {
 
-  echo "$QUERY_ELEMENT" | while IFS='|' read ATOMIC_NUMBER ATOMIC_SYMBOL ELEMENT_NAME ELEMENT_TYPE ATOMIC_MASS MELTING_POINT BOILING_POINT TYPE_ID; do
+  echo "$QUERY_ELEMENT" | while IFS='|' read TYPE_ID ATOMIC_NUMBER ATOMIC_SYMBOL ELEMENT_NAME ATOMIC_MASS MELTING_POINT BOILING_POINT ELEMENT_TYPE; do
 
-    echo -e "\nThe element with atomic number $ATOMIC_NUMBER is $ELEMENT_NAME ($ATOMIC_SYMBOL). It's a $ELEMENT_TYPE, with a mass of $ATOMIC_MASS amu. $ELEMENT_NAME has a melting point of $MELTING_POINT celsius and a boiling point of $BOILING_POINT celsius.\n"
+    # echo $QUERY_ELEMENT
+
+    echo "The element with atomic number $ATOMIC_NUMBER is $ELEMENT_NAME ($ATOMIC_SYMBOL). It's a $ELEMENT_TYPE, with a mass of $ATOMIC_MASS amu. $ELEMENT_NAME has a melting point of $MELTING_POINT celsius and a boiling point of $BOILING_POINT celsius."
   done
 
 }
@@ -30,13 +32,13 @@ QUERY() {
 # empty arg
 if [[ -z $1 ]]; then
 
-  echo -e "\nPlease provide an element as an argument."
+  echo "Please provide an element as an argument."
 
 # when arg is a number
 elif [[ $1 =~ ^[0-9]+$ ]]; then
 
   # query database using argument
-  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) WHERE atomic_number = $1")
+  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) INNER JOIN types USING (type_id) WHERE atomic_number = $1")
 
   if [[ -z $QUERY_ELEMENT ]]; then
 
