@@ -54,7 +54,7 @@ elif [[ $1 =~ ^[0-9]+$ ]]; then
 elif [[ ! $1 =~ ^[0-9]+$ ]]; then
 
   # query database using argument
-  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) WHERE name LIKE '$1%' LIMIT 1")
+  QUERY_ELEMENT=$($PSQL "SELECT * FROM elements INNER JOIN properties USING (atomic_number) INNER JOIN types USING (type_id) WHERE name LIKE '$1%' LIMIT 1")
 
   if [[ -z $QUERY_ELEMENT ]]; then
 
